@@ -3,6 +3,7 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip,
 } from 'recharts';
 import Title from './Title';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
 export default function Chart() {
@@ -31,14 +32,85 @@ export default function Chart() {
                 setData(temp)
             })
         })
-        
     }, [])
-
+    const day = () =>{
+        axios
+        .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+        .then(res=>{
+            axios
+            .get(`https://api.coingecko.com/api/v3/coins/${res.data[0].id}/market_chart?vs_currency=USD&days=1`)
+            .then(res=>{
+                var temp = [];
+                res.data.prices.map((x)=>{
+                    temp.push({ date: new Date(x[0]*1000).toLocaleTimeString("en-US"), price: x[1]})
+                    return temp
+                })
+                setData(temp)
+            })
+        })
+    }
+    const week = () =>{
+        axios
+        .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+        .then(res=>{
+            axios
+            .get(`https://api.coingecko.com/api/v3/coins/${res.data[0].id}/market_chart?vs_currency=USD&days=7`)
+            .then(res=>{
+                var temp = [];
+                res.data.prices.map((x)=>{
+                    temp.push({ date: new Date(x[0]).toLocaleDateString("en-US"), price: x[1]})
+                    return temp
+                })
+                setData(temp)
+            })
+        })
+    }
+    const month = () =>{
+        axios
+        .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+        .then(res=>{
+            axios
+            .get(`https://api.coingecko.com/api/v3/coins/${res.data[0].id}/market_chart?vs_currency=USD&days=30`)
+            .then(res=>{
+                // console.log(res)
+                var temp = [];
+                res.data.prices.map((x)=>{
+                    temp.push({ date: new Date(x[0]).toLocaleDateString("en-US"), price: x[1]})
+                    return temp
+                })
+                setData(temp)
+            })
+        }) 
+    }
+    const year = () =>{
+        axios
+        .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
+        .then(res=>{
+            setRank(res.data[0].name)
+            setLogo(res.data[0].image)
+            axios
+            .get(`https://api.coingecko.com/api/v3/coins/${res.data[0].id}/market_chart?vs_currency=USD&days=360`)
+            .then(res=>{
+                var temp = [];
+                res.data.prices.map((x)=>{
+                    temp.push({ date: new Date(x[0]).toLocaleDateString("en-US"), price: x[1]})
+                    return temp
+                })
+                setData(temp)
+            })
+        })
+    }
     return (
         <React.Fragment>
-            <Title><img width={20} src={logo}></img> {rank} Price Change Percentage Currency</Title>
+            <Title><img alt="rank-1-img" width={20} src={logo}></img> {rank} Price Change Percentage Currency</Title>
+            <div style={{'display': 'flex'}}>
+                <Button onClick={day} variant="outlined">1 Day</Button>
+                <Button onClick={week} variant="outlined">1 Week</Button>
+                <Button onClick={month} variant="outlined">1 Month</Button>
+                <Button onClick={year} variant="outlined">1 Year</Button>
+            </div>
             <AreaChart
-                width={750}
+                width={850}
                 height={165}
                 data={data}
                 margin={{

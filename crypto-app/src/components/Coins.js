@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 
-export default function Orders() {
+export default function Coins() {
     const [state, setState] = useState({
         columns: [
             { title: 'Market Cap Rank', field: 'rank', filtering: false },
@@ -32,11 +32,10 @@ export default function Orders() {
                         rank: x.market_cap_rank,
                         symbol: x.symbol,
                         logo: {img: x.image, name: x.name},
-                        // name: ,
                         pairEx: moneyconverter(x.current_price),
                         mCap: moneyconverter(x.market_cap),
                         t_volume: moneyconverter(x.total_volume),
-                        timechange: x.last_updated,
+                        timechange: new Date(x.last_updated).toLocaleDateString("en-US"),
                     })
                     return rdata;
             })
