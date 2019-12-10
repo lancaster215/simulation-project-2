@@ -10,11 +10,11 @@ export default function Chart() {
     const [logo, setLogo] = useState('')
     const [rank, setRank] = useState('')
     const [data, setData] = useState();
-    const moneyconverter = (x) =>{
-        var parts = x.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
+    // const moneyconverter = (x) =>{
+    //     var parts = x.toString().split(".");
+    //     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    //     return parts.join(".");
+    // }
     useEffect(()=>{
         axios
         .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd')
