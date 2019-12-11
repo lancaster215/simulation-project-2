@@ -1,0 +1,14 @@
+{
+  "transactions": [
+    {
+      "transaction": "Buy",
+      "currency_name": "bitcoin",
+      "money": "USD",
+      "total_transact": 15922.016,
+      "currency_price": 7237.28,
+      "wallet": 984077.984,
+      "symbol": "btc",
+      "id": 1
+    }
+  ]
+}
