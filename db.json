@@ -4,11 +4,23 @@
       "transaction": "Buy",
       "currency_name": "bitcoin",
       "money": "USD",
-      "total_transact": 15922.016,
-      "currency_price": 7237.28,
-      "wallet": 984077.984,
+      "total_transact": 15760.734,
+      "currency_price": 7163.97,
+      "coin_qty": "2",
+      "wallet": 984239.266,
       "symbol": "btc",
       "id": 1
+    },
+    {
+      "transaction": "Buy",
+      "currency_name": "ethereum",
+      "money": "USD",
+      "total_transact": 314.688,
+      "currency_price": 143.04,
+      "coin_qty": "2",
+      "wallet": 983924.578,
+      "symbol": "eth",
+      "id": 2
     }
   ]
 }
