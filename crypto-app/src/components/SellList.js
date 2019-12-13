@@ -68,17 +68,23 @@ export default function SellList(){
         .then(res=>{
             let temp = []
             let arr = [];
-            res.data.map((x)=>{
-                if(arr.indexOf(x.currency_name) === -1){
-                    arr.reverse().push(x.currency_name)
+            res.data.reverse().map((x)=>{
+                if(arr.lastIndexOf(x.currency_name) === -1){
+                    arr.push(x.currency_name)
+                    // console.log(thisarr)
+                    // console.log(arr)
+                    // let unique = [...new Set(array)]
                     temp.push({ 
                         cname: x.currency_name, 
                         cid: x.id, 
-                        cinvest: moneyconverter(x.total_transact/x.currency_price)
+                        cinvest: moneyconverter(x.total_transact/x.currency_price),
+                        coin: x.coin_qty
                     })
                 }
-                return temp, arr.reverse()
+                // console.log(temp)
+                return temp
             })
+            
             setCdetails(temp)
         })
     };
@@ -86,29 +92,35 @@ export default function SellList(){
         setOpen1(false);
     };
     const sell = () => {
-        if(amtsell <= sellvals.coin_amt && amtsell >= 0){
-            var pre_trans_amt = amtsell * dynamicCoinPrice
-            var trans = pre_trans_amt*0.10
-            var final_trans = pre_trans_amt+trans
-            
-            var final_wallet = sellvals.t_trans - final_trans
-            var super_wallet = sellvals.wallet + final_wallet
+        axios
+        .get(`http://localhost:4000/transactions/${cvals}`)
+        .then(res=>{
+            if(amtsell <= sellvals.coin_amt && amtsell >= 0){
+                var pre_trans_amt = amtsell * dynamicCoinPrice
+                var trans = pre_trans_amt*0.10
+                var final_trans = pre_trans_amt+trans
+                
+                var super_wallet = res.data.wallet + final_trans //final_wallet
 
-            var final_coinqty= sellvals.coin_amt - amtsell
-            axios
-            .post('http://localhost:4000/transactions',{
-                "transaction": "Sell",
-                "currency_name": sellvals.cname,
-                "money": sellvals.money,
-                "total_transact": final_trans,
-                "currency_price": dynamicCoinPrice,
-                "coin_qty": final_coinqty,
-                "wallet": super_wallet,
-                "symbol": sellvals.symbol
-            })
-        }else{
-            alert("Note: Please Enter Amount not exceeding the On Hand Coin Amount and not Below 0")
-        }
+                var final_coinqty= sellvals.coin_amt - amtsell
+                axios
+                .post('http://localhost:4000/transactions',{
+                    "transaction": "Sell",
+                    "currency_name": sellvals.cname,
+                    "money": sellvals.money,
+                    "total_transact": final_trans,
+                    "currency_price": dynamicCoinPrice,
+                    "coin_qty": final_coinqty,
+                    "wallet": super_wallet,
+                    "symbol": sellvals.symbol,
+                    // "available_coin": ,
+                }).then(res=>{
+                    alert('Successfully Sold!')
+                }).catch(err=>{alert('Error!')})
+            }else{
+                alert("Note: Please Enter Amount not exceeding the On Hand Coin Amount and not Below 0")
+            }
+        })
     }
     const calculate=e=>{
         setAmtsell(e.target.value)
@@ -141,9 +153,7 @@ export default function SellList(){
                         >
                             <option value="">-</option>
                             {cdetails.map((x)=> (
-                                <option key={x.cid} value={x.cid}>Trans.No.{x.cid} 
-                                    {x.cname}
-                                </option>
+                                <option key={x.cid} value={x.cid}>{x.cname}</option>
                             ))}
                         </NativeSelect>
                         <Typography>

@@ -86,7 +86,8 @@ export default function BuyList(){
             "currency_price": price.price,
             "coin_qty": coinqty,
             "wallet": finalwallet,
-            "symbol": price.symbol
+            "symbol": price.symbol,
+            // "available_coin": ,
         }).then(res=>{
             alert('Successfully Purchased!')
         }).catch(err=>{alert('Error!')})
@@ -105,19 +106,6 @@ export default function BuyList(){
     },[])
     return(
         <React.Fragment>
-            <FormControl className={classes.margin}>
-                <InputLabel htmlFor="select">Select a Coin</InputLabel>
-                <NativeSelect
-                    id="select"
-                    value={values}
-                    onChange={handleChange}
-                    // input={<BootstrapInput />}
-                    ><option value="">-</option>
-                    {data.map((x)=> (
-                        <option key={x.id} value={x.id}>{x.name}</option> 
-                    ))}
-                </NativeSelect>
-            </FormControl>
             <ListItem button onClick={handleClickOpen}>
                 <ListItemIcon>
                     <MonetizationOnIcon />
@@ -125,6 +113,23 @@ export default function BuyList(){
                 <ListItemText primary="Buy" />
             </ListItem>
             <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+                <DialogContent>
+                    <FormControl className={classes.margin}>
+                        <InputLabel htmlFor="select">Select a Coin</InputLabel>
+                        <NativeSelect
+                            id="select"
+                            value={values}
+                            onChange={handleChange}
+                            // input={<BootstrapInput />}
+                        >
+                            <option value="">-</option>
+                            {/* {console.log(data)} */}
+                            {data.map((x)=> (
+                                <option key={x.id} value={x.id}>{x.name}</option> 
+                            ))}
+                        </NativeSelect>
+                    </FormControl>
+                </DialogContent>
                 <DialogTitle id="customized-dialog-title">
                     Buy {values}
                     <div style={{'float': 'right'}}>

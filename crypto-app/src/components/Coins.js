@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-// import Title from './Title';
 import axios from 'axios';
 import MaterialTable from 'material-table';
 
