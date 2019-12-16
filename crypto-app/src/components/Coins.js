@@ -26,7 +26,6 @@ export default function Coins() {
             {
                 let rdata = []
                 res.data.map((x) =>{
-                    // console.log(x)
                     rdata.push({
                         rank: x.market_cap_rank,
                         symbol: x.symbol,
@@ -44,7 +43,6 @@ export default function Coins() {
 
   return (
     <React.Fragment>
-      {/* <Title>Recent Orders</Title> */}
         <MaterialTable
             components={{
                 Toolbar: props => (

@@ -56,7 +56,6 @@ export default function SellList(){
                 symbol: res.data.symbol,
                 t_trans: res.data.total_transact,
                 wallet: res.data.wallet,
-                // coin_amt: res.data.coin_qty,
                 a_coin: res.data.available_coin
             })
             setSellvals(...temp)
@@ -95,10 +94,7 @@ export default function SellList(){
                 var pre_trans_amt = amtsell * dynamicCoinPrice
                 var trans = pre_trans_amt*0.10
                 var final_trans = pre_trans_amt+trans
-                
-                var super_wallet = res.data.wallet + final_trans //final_wallet
-
-                // var final_coinqty= sellvals.coin_amt - amtsell
+                var super_wallet = res.data.wallet + final_trans
                 var a_coin = sellvals.a_coin - amtsell;
                 axios
                 .post('http://localhost:4000/transactions',{
@@ -144,7 +140,7 @@ export default function SellList(){
                 <DialogContent>
                     <FormControl className={classes.margin}>
                         <InputLabel htmlFor="select-coin">Select</InputLabel>
-                        <NativeSelect //change this to sum of transaction coin, there should be no duplicate coin name
+                        <NativeSelect
                         id="select-coin"
                         value={cvals}
                         onChange={handleChange1}

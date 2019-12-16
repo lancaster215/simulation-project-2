@@ -50,7 +50,6 @@ export default function Lists(){
                 if(arr.lastIndexOf(x.currency_name) === -1){
                     arr.reverse().push(x.currency_name)
                     if(x.transaction === "Buy"){
-                        // console.log(x)
                         temp.push({ id: x.id, c_name: x.currency_name, cprice: x.currency_price, coin_qty: x.coin_qty})
                         // cprice is the value of the coin on the moment the user bought the coin
                     }

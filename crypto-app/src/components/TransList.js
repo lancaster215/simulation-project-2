@@ -21,8 +21,7 @@ export default function TransList(){
             {title: 'Remaining Coin/s Invested', field: 'r_invested_c'},
             {title: 'Total Coin Invested', field: 'invested_c'},
             {title: 'Total Transaciton', field: 'total_transact'},
-            {title: 'Account Money (after Transaction)', field: 'wallet'},
-            // {title: 'Remaining Coin', field: 'wallet'},
+            {title: 'Account Money (after Transaction)', field: 'wallet'}
         ]
     })
     const moneyconverter = (x) =>{
@@ -42,12 +41,10 @@ export default function TransList(){
                     currency_name: x.currency_name,
                     currency_price: '$'+moneyconverter(x.currency_price),
                     r_invested_c: x.available_coin,
-                    // total_cprice: '$'+moneyconverter(Math.round(x.total_transact*100)/100),
                     time: new Date().toLocaleDateString("en-US"),
                     invested_c: x.coin_qty,
                     total_transact: '$'+moneyconverter(Math.round((((x.coin_qty*x.currency_price)*0.10)+(x.coin_qty*x.currency_price))*100)/100),
                     wallet: '$'+moneyconverter(Math.round(x.wallet*100)/100),
-                    // available_coin: x.available_coin,
                 })
                 return rdata;
             })

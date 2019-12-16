@@ -65,7 +65,6 @@ export default function BuyList(){
         }
     }
     const handleClickOpen = (e) => {
-        // e.preventDefault();
         setOpen(true);
         axios
         .get('http://localhost:4000/transactions')
@@ -77,7 +76,6 @@ export default function BuyList(){
     };
     const handleClose = () => {
         setOpen(false);
-        // console.log(acoin)
     };
     const purchase = () => {
         var finalwallet = wallet-mprice
@@ -86,7 +84,6 @@ export default function BuyList(){
         }else{
             var anotherone = parseInt(coinqty) + parseInt(acoin)
         }
-        // console.log(parseInt(coinqty), parseInt(acoin), anotherone)
         axios
         .post('http://localhost:4000/transactions',{
             "transaction": "Buy",
@@ -137,10 +134,8 @@ export default function BuyList(){
                             id="select"
                             value={values}
                             onChange={handleChange}
-                            // input={<BootstrapInput />}
                         >
                             <option value="">-</option>
-                            {/* {console.log(data)} */}
                             {data.map((x)=> (
                                 <option key={x.id} value={x.id}>{x.name}</option> 
                             ))}
