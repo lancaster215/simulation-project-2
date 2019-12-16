@@ -28,10 +28,9 @@ const useStyles = makeStyles(theme => ({
 }));
 export default function Lists(){
     const classes = useStyles();
-    const [wallet, setWallet] = useState();
+    const [wallet, setWallet] = useState(0);
     const [open3, setOpen3] = useState(false);
     const [bought, setBought] = useState([])
-    // const [coin, setCoin] = useState()
     const [values, setValues] = useState()
     const [latest, setLatest] = useState([]);
 
@@ -128,11 +127,10 @@ export default function Lists(){
         axios
         .get('http://localhost:4000/transactions')
         .then(res=>{
-            res.data.map((x)=>{
-                return setWallet(x.wallet)
-            })
+            var thismoney = res.data[res.data.length - 1];
+            thismoney ? setWallet(thismoney.wallet): setWallet(1000000)
         })
-    },[])
+    },[wallet])
     return(
         <React.Fragment>
             <BuyList/>

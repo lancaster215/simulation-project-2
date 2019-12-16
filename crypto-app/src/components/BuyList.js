@@ -30,8 +30,10 @@ export default function BuyList(){
     const [price, setPrice] = useState(0);
     const [mprice, setMPrice] = useState(0);
     const [open, setOpen] = useState(false);
-    const [wallet, setWallet] = useState(1000000);// FIX THIS WALLET
-    const [coinqty, setCoinQty] = useState(0)
+    const [wallet, setWallet] = useState(0);
+    const [coinqty, setCoinQty] = useState(0); // the input num: the user input the coin qty to buy
+    const [acoin, setACoin] = useState(); //the coin qty 
+    const [lastcname, setLastcname]= useState();
 
     const handleChange=e=>{
         setMPrice(0)
@@ -52,7 +54,7 @@ export default function BuyList(){
     };
     const multiply=e=>{
         var num = e.target.value //input num
-        setCoinQty(e.target.value) 
+        setCoinQty(e.target.value)
         if(num > 0){
             var prefinal = price.price * num
             var final = prefinal*0.10
@@ -63,20 +65,28 @@ export default function BuyList(){
         }
     }
     const handleClickOpen = (e) => {
+        // e.preventDefault();
         setOpen(true);
         axios
         .get('http://localhost:4000/transactions')
         .then(res=>{
-            res.data.map((x)=>{
-                return setWallet(x.wallet)
-            })
+            setLastcname(res.data[res.data.length - 1].currency_name)
+            var temp = res.data[res.data.length - 1]
+            temp ? setACoin(temp.coin_qty) : setACoin(0)
         })
     };
     const handleClose = () => {
         setOpen(false);
+        // console.log(acoin)
     };
     const purchase = () => {
         var finalwallet = wallet-mprice
+        if(lastcname !== values){
+            var anotherone = parseInt(coinqty)
+        }else{
+            var anotherone = parseInt(coinqty) + parseInt(acoin)
+        }
+        // console.log(parseInt(coinqty), parseInt(acoin), anotherone)
         axios
         .post('http://localhost:4000/transactions',{
             "transaction": "Buy",
@@ -87,15 +97,22 @@ export default function BuyList(){
             "coin_qty": coinqty,
             "wallet": finalwallet,
             "symbol": price.symbol,
-            // "available_coin": ,
+            "available_coin": anotherone,
         }).then(res=>{
             alert('Successfully Purchased!')
         }).catch(err=>{alert('Error!')})
+        window.location.reload(true)
     }
     useEffect(()=>{
         axios
         .get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=USD&order=market_cap_desc&per_page=100&page=1&sparkline=false')
         .then(res=>{
+            axios
+            .get('http://localhost:4000/transactions')
+            .then(res=>{
+                var thismoney = res.data[res.data.length - 1];
+                thismoney ? setWallet(thismoney.wallet): setWallet(1000000)
+            })
             var temp = [];
             res.data.map((x)=>{
                 temp.push({ id: x.id, name: x.name,})
@@ -103,7 +120,7 @@ export default function BuyList(){
             })
             setData(temp)
         })
-    },[])
+    },[wallet])
     return(
         <React.Fragment>
             <ListItem button onClick={handleClickOpen}>

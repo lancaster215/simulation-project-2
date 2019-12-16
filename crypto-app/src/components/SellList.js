@@ -56,7 +56,8 @@ export default function SellList(){
                 symbol: res.data.symbol,
                 t_trans: res.data.total_transact,
                 wallet: res.data.wallet,
-                coin_amt: res.data.coin_qty,
+                // coin_amt: res.data.coin_qty,
+                a_coin: res.data.available_coin
             })
             setSellvals(...temp)
         })
@@ -71,20 +72,15 @@ export default function SellList(){
             res.data.reverse().map((x)=>{
                 if(arr.lastIndexOf(x.currency_name) === -1){
                     arr.push(x.currency_name)
-                    // console.log(thisarr)
-                    // console.log(arr)
-                    // let unique = [...new Set(array)]
                     temp.push({ 
                         cname: x.currency_name, 
                         cid: x.id, 
                         cinvest: moneyconverter(x.total_transact/x.currency_price),
-                        coin: x.coin_qty
+                        coin: x.coin_qty,
                     })
                 }
-                // console.log(temp)
                 return temp
             })
-            
             setCdetails(temp)
         })
     };
@@ -95,14 +91,15 @@ export default function SellList(){
         axios
         .get(`http://localhost:4000/transactions/${cvals}`)
         .then(res=>{
-            if(amtsell <= sellvals.coin_amt && amtsell >= 0){
+            if(amtsell <= sellvals.a_coin && amtsell >= 0){
                 var pre_trans_amt = amtsell * dynamicCoinPrice
                 var trans = pre_trans_amt*0.10
                 var final_trans = pre_trans_amt+trans
                 
                 var super_wallet = res.data.wallet + final_trans //final_wallet
 
-                var final_coinqty= sellvals.coin_amt - amtsell
+                // var final_coinqty= sellvals.coin_amt - amtsell
+                var a_coin = sellvals.a_coin - amtsell;
                 axios
                 .post('http://localhost:4000/transactions',{
                     "transaction": "Sell",
@@ -110,10 +107,10 @@ export default function SellList(){
                     "money": sellvals.money,
                     "total_transact": final_trans,
                     "currency_price": dynamicCoinPrice,
-                    "coin_qty": final_coinqty,
+                    "coin_qty": amtsell,
                     "wallet": super_wallet,
                     "symbol": sellvals.symbol,
-                    // "available_coin": ,
+                    "available_coin": a_coin,
                 }).then(res=>{
                     alert('Successfully Sold!')
                 }).catch(err=>{alert('Error!')})
@@ -121,6 +118,7 @@ export default function SellList(){
                 alert("Note: Please Enter Amount not exceeding the On Hand Coin Amount and not Below 0")
             }
         })
+        window.location.reload(true);
     }
     const calculate=e=>{
         setAmtsell(e.target.value)
@@ -157,7 +155,7 @@ export default function SellList(){
                             ))}
                         </NativeSelect>
                         <Typography>
-                            On Hand Coin Amount: {sellvals.coin_amt}
+                            On Hand Coin Amount: {sellvals.a_coin}
                         </Typography>
                         <TextField
                             id="filled-number"
