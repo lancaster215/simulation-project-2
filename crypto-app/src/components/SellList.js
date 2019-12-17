@@ -109,12 +109,12 @@ export default function SellList(){
                     "available_coin": a_coin,
                 }).then(res=>{
                     alert('Successfully Sold!')
+                    window.location.reload(true);
                 }).catch(err=>{alert('Error!')})
             }else{
                 alert("Note: Please Enter Amount not exceeding the On Hand Coin Amount and not Below 0")
             }
         })
-        window.location.reload(true);
     }
     const calculate=e=>{
         setAmtsell(e.target.value)

@@ -107,6 +107,30 @@
       "symbol": "xrp",
       "available_coin": 2,
       "id": 9
+    },
+    {
+      "transaction": "Sell",
+      "currency_name": "ethereum",
+      "money": "USD",
+      "total_transact": 0,
+      "currency_price": 132.36,
+      "coin_qty": "0",
+      "wallet": 999484.848,
+      "symbol": "eth",
+      "available_coin": 3,
+      "id": 10
+    },
+    {
+      "transaction": "Buy",
+      "currency_name": "eos",
+      "money": "USD",
+      "total_transact": 5.17,
+      "currency_price": 2.35,
+      "coin_qty": "2",
+      "wallet": 999479.678,
+      "symbol": "eos",
+      "available_coin": 2,
+      "id": 11
     }
   ]
 }
